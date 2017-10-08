@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
+     * @ORM\OneToMany(targetEntity="ArticleBundle\Entity\Article", mappedBy="fosUserId")
+     */
+    private $articles;
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -21,6 +27,28 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+        $this->articles = new ArrayCollection();
+    }
+
+    /**
+     * Set $articles
+     *
+     * @Param array $articles
+     *
+     * Return User
+     */
+    public function setArticles(array $articles)
+    {
+        $this->articles = $articles;
+    }
+
+    /**
+     * Get articles
+     *
+     * @return array
+     */
+    public function getArticles()
+    {
+        return array('articles' => $this->articles);
     }
 }
