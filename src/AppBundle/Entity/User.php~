@@ -35,10 +35,10 @@ class User extends BaseUser
      *
      * Return User
      */
-    /*public function setArticles($articles)
+    public function setArticles($articles)
     {
         $this->articles = $articles;
-    }*/
+    }
 
     /**
      * Get articles

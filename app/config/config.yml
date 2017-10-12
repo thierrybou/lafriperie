@@ -7,6 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    app.path.article_images: /uploads/images/articles
 
 framework:
     #esi: ~
@@ -37,19 +38,19 @@ framework:
 
 # Twig Configuration
 twig:
-    debug: '%kernel.debug%'
+    debug:            '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
+        driver:   pdo_mysql
+        host:     '%database_host%'
+        port:     '%database_port%'
+        dbname:   '%database_name%'
+        user:     '%database_user%'
         password: '%database_password%'
-        charset: UTF8
+        charset:  UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
@@ -59,22 +60,69 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        naming_strategy:             doctrine.orm.naming_strategy.underscore
+        auto_mapping:                true
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport:  '%mailer_transport%'
+    username:   '%mailer_user%'
+    password:   '%mailer_password%'
+    host:       smtp.gmail.com
+    encryption: ssl
+#    auth_mode: login
     spool: { type: memory }
 
 # FOSUser Configuration
 fos_user:
-    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-    firewall_name: main
-    user_class: AppBundle\Entity\User
+    db_driver:       orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name:   main
+    user_class:      AppBundle\Entity\User
     from_email:
-        address: "test@gmail.com"
+        address:     "test@gmail.com"
         sender_name: "test"
+    service:
+        mailer:       fos_user.mailer.twig_swift
+    registration:
+        confirmation:
+            enabled:  true
+            from_email:
+                address:     registration@example.com
+                sender_name: Demo Registration
+            template:        '@FOSUser/Registration/email.txt.twig'
+    resetting:
+        email:
+            from_email:
+                address:     resetting@example.com
+                sender_name: Demo Resetting
+            template:        email/password_resetting.email.twig
+
+#  EasyAdmin Configuration
+easy_admin:
+    site_name: 'Lafriperie ADMIN'
+    entities:
+        Article:
+            class: ArticleBundle\Entity\Article
+            list:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.article_images%' }
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.article_images%' }
+            form:
+                fields:
+                    - { property: 'imageFile', type: 'vich_image' }
+        User:
+            class: AppBundle\Entity\User
+
+#  VichUploader Configuration
+vich_uploader:
+    db_driver: orm
+    mappings:
+        article_images:
+            uri_prefix:         '%app.path.article_images%'
+            upload_destination: '%kernel.root_dir%/../web/uploads/images/articles'
+
+            inject_on_load:   false
+            delete_on_update: true
+            delete_on_remove: true

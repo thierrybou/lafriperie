@@ -21,14 +21,19 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $article->setFosUserId($this->getUser()->getId());
+            $article->setFosUserId($this->getUser());
             $article->setAdded(\DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));
+
+            //dump($this->getUser());
+            //dump($article);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
 
-            //return $this->render('article/add.html.twig');
+            return $this->render('article/add.html.twig', [
+                'form' => $form->createView(),
+            ]);
         }
         return $this->render('article/add.html.twig', [
             'form' => $form->createView(),
