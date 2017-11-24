@@ -1,10 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block content %}
+    <div class="uk-container uk-container-small">
 
-    {{ form_start(form, {'attr': {'class': 'form-control'} }) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+        {{ form_start(form, { 'attr': {'class': 'uk-form-horizontal'} }) }}
+        <div class="uk-margin">
+            {{ form_label(form.name) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.name) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.category) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.category) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.brand) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.brand) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.model) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.model) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.gender) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.gender) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.description) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.description) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.quantity) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.quantity) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.size) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.size) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_label(form.price) }}
+            <div class="uk-form-controls">
+                {{ form_widget(form.price) }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div uk-form-custom>
+                {{ form_widget(form.images) }}
+                <button class="uk-button uk-button-default" type="button" tabindex="-1">Upload a photo</button>
+            </div>
+        </div>
+        <div class="uk-margin">
+            {{ form_widget(form.submit) }}
+        </div>
+        {{ form_end(form) }}
 
+        {% for message in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.session.flashbag.get('errors') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 

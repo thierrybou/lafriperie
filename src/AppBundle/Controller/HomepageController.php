@@ -11,8 +11,8 @@ class HomepageController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
+    /*public function indexAction(Request $request)
     {
         return $this->render('default/index.html.twig');
-    }
+    }*/
 }

@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.path.article_images: /uploads/images/articles
+    app.path.article_images: '/lafriperie/web/uploads/images/articles'
 
 framework:
     #esi: ~
@@ -21,7 +21,7 @@ framework:
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
+    serializer: { enabled: true }
     templating:
         engines: ['twig']
     default_locale: '%locale%'
@@ -40,6 +40,13 @@ framework:
 twig:
     debug:            '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+
+# Twig Extensions
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
 
 # Doctrine Configuration
 doctrine:
@@ -97,15 +104,29 @@ fos_user:
                 sender_name: Demo Resetting
             template:        email/password_resetting.email.twig
 
-#  EasyAdmin Configuration
+# EasyAdmin Configuration
 easy_admin:
     site_name: 'Lafriperie ADMIN'
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
     entities:
         Article:
             class: ArticleBundle\Entity\Article
             list:
                 fields:
+                    - id
+                    - name
+                    - category
+                    - brand
+                    - model
+                    - gender
+                    - description
+                    - quantity
+                    - price
                     - { property: 'image', type: 'image', base_path: '%app.path.article_images%' }
+                    - updated
             show:
                 fields:
                     - { property: 'image', type: 'image', base_path: '%app.path.article_images%' }
@@ -115,14 +136,27 @@ easy_admin:
         User:
             class: AppBundle\Entity\User
 
-#  VichUploader Configuration
+# VichUploader Configuration
 vich_uploader:
     db_driver: orm
     mappings:
         article_images:
-            uri_prefix:         '%app.path.article_images%'
+            uri_prefix:         '/uploads/images/articles'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/articles'
 
             inject_on_load:   false
             delete_on_update: true
             delete_on_remove: true
+
+# LiipImagineBundle Configuration
+liip_imagine:
+    resolvers:
+        default:
+            web_path: ~
+    filter_sets:
+        cache: ~
+        article_thumb:
+            quality: 75
+            filters:
+                thumbnail:  { size: [240, 180], mode: outbound }
+                #background: { size: [121, 91], position: center, color: '#000000' }
