@@ -25,6 +25,28 @@
                             </form>
                         </div>
                     </div>
+
+
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            <a href="#">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a href="{{ path('fos_user_profile_show') }}">Mon profil</a></li>
+                                    <li><a href="#">Mes paramètres</a></li>
+                                    <li><a href="#">Mes articles</a></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+
+                    {% else %}
+                        <a class="uk-navbar-item" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
+
                 </div>
             </nav>
         {% endblock %}
