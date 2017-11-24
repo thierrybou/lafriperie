@@ -3,6 +3,8 @@
 namespace ArticleBundle\Entity;
 
 use AppBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -12,7 +14,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="ArticleBundle\Repository\ArticleRepository")
- * @Vich\Uploadable
  */
 class Article
 {
@@ -59,9 +60,9 @@ class Article
     private $model;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="gender", type="boolean")
+     * @ORM\Column(name="gender", type="string", length=10)
      */
     private $gender;
 
@@ -80,6 +81,13 @@ class Article
     private $quantity;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="size", type="string", length=10)
+     */
+    private $size;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="price", type="integer")
@@ -87,23 +95,10 @@ class Article
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
+     * @ORM\OneToMany(targetEntity="ArticleBundle\Entity\Image", mappedBy="article", cascade={"persist", "merge", "remove"}, orphanRemoval=true)
+     * @var Collection
      */
-    private $image;
-
-    /**
-     * @Vich\UploadableField(mapping="article_images", fileNameProperty="image", size="imageSize")
-     * @var File
-     */
-    private $imageFile;
-
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @var integer
-     */
-    private $imageSize;
+    private $images;
 
     /**
      * @var \DateTime
@@ -132,6 +127,11 @@ class Article
      * @ORM\Column(name="sold", type="datetime", nullable=true)
      */
     private $sold;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -264,7 +264,7 @@ class Article
     /**
      * Set gender
      *
-     * @param boolean $gender
+     * @param string $gender
      *
      * @return Article
      */
@@ -278,7 +278,7 @@ class Article
     /**
      * Get gender
      *
-     * @return bool
+     * @return string
      */
     public function getGender()
     {
@@ -334,6 +334,30 @@ class Article
     }
 
     /**
+     * Set size
+     *
+     * @param string $size
+     *
+     * @return Article
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Get size
+     *
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
      * Set price
      *
      * @param integer $price
@@ -358,68 +382,38 @@ class Article
     }
 
     /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
+     * Add images
      *
+     * @param Image $image
      * @return Article
      */
-    public function setImageFile(File $image = null)
+    public function addImage(Image $image)
     {
-        $this->imageFile = $image;
-
-        // VERY IMPORTANT:
-        // It is required that at least one field changes if you are using Doctrine,
-        // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updated = new \DateTime('now');
-        }
-        return $this;
-    }
-
-    /**
-     * @return File|null
-     */
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param string $image
-     *
-     * @return Article
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param integer $imageSize
-     *
-     * @return Article
-     */
-    public function setImageSize($imageSize)
-    {
-        $this->imageSize = $imageSize;
+        $this->images[] = $image;
+        $image->setArticle($this);
 
         return $this;
     }
 
     /**
-     * @return integer|null
+     * Remove images
+     *
+     * @param Image $imageFile
      */
-    public function getImageSize()
+    public function removeImage(Image $image)
     {
-        return $this->imageSize;
+        $this->images->removeElement($image);
+        $image->setArticle(null);
+    }
+
+    /**
+     * Get images
+     *
+     * @return Collection
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 
     /**
