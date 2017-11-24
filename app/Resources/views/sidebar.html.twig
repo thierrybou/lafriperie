@@ -1,0 +1,86 @@
+<div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true">
+    <div class="uk-offcanvas-bar">
+
+        <h2>LA FRIPERIE</h2>
+        <button class="uk-offcanvas-close" type="button" uk-close></button>
+
+        <ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
+            <li class="uk-nav-header">Fripes</li>
+            <li><a href="{{ path('showAll') }}">Toutes les fripes</a></li>
+            <li id="brand-sidebar" class="uk-parent">
+                <a href="#">Fripes par marque</a>
+                <ul class="uk-nav-sub">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        {% for brand in brands %}
+                            <label><input class="uk-checkbox" name="brand" value="{{ brand.brand }}" type="checkbox"> {{ brand.brand }}</label>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </li>
+
+            <li id="category-sidebar" class="uk-parent">
+                <a href="#">Fripes par catégories</a>
+                <ul class="uk-nav-sub">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        {% for category in categories %}
+                            <label><input class="uk-checkbox" name="category" value="{{ category.category }}" type="checkbox"> {{ category.category }}</label>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </li>
+
+            <li id="size-sidebar" class="uk-parent">
+                <a href="#">Fripes par tailles</a>
+                <ul class="uk-nav-sub">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        {% for size in sizes %}
+                            <label><input class="uk-checkbox" name="size" value="{{ size.size }}" type="checkbox"> {{ size.size }}</label>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </li>
+
+            <li id="gender-sidebar" class="uk-parent">
+                <a href="#">Fripes par genres</a>
+                <ul class="uk-nav-sub">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        {% for gender in genders %}
+                            <label><input class="uk-checkbox" name="size" value="{{ gender.gender }}" type="checkbox"> {{ gender.gender }}</label>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </li>
+
+            <li class="price-sidebar uk-parent">
+                <a href="#">Fripes par prix</a>
+                <ul class="uk-nav-sub">
+                    <form class="uk-grid-small uk-form-horizontal" uk-grid>
+                        <div class="uk-width-1-2@s">
+                            <label class="uk-form-label uk-form-width-xsmall" for="form-horizontal-text">De</label>
+                            <input id="form-horizontal-text" class="uk-input uk-form-width-xsmall price-from" type="text" placeholder="0">
+                        </div>
+                        <div class="uk-width-1-2@s">
+                            <label class="uk-form-label uk-form-width-xsmall" for="form-horizontal-text">à</label>
+                            <input id="form-horizontal-text" class="uk-input uk-form-width-xsmall price-to" type="text" placeholder="50">
+                        </div>
+                    </form>
+                </ul>
+            </li>
+
+            <li><a href="#">Fripes solidaires</a></li>
+            <li class="uk-nav-divider"></li>
+            <li class="uk-active"><a href="#">Active</a></li>
+            <li><a href="{{ path('add') }}">Vendre ses fripes</a></li>
+            <li><a href="#">Donner ses fripes</a></li>
+        </ul>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat.</p>
+
+        <div class="uk-margin">
+            <button id="submitFilter" class="uk-button uk-button-default" type="button" tabindex="-1">Apply</button>
+        </div>
+
+    </div>
+</div>
