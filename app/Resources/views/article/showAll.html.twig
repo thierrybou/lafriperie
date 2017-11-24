@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="uk-container uk-container-large">
+        <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+        {% for article in articles %}
+
+                <div class="uk-width-1-6@xl uk-width-1-5@l uk-width-1-4@m uk-width-1-3@s">
+                    <div class="uk-card uk-card-default uk-card-hover">
+                        <div class="uk-card-media-top">
+                            <a href="{{ path('showOne', {'id': article.id}) }}">
+                                <img src="{{ vich_uploader_asset(article.images['0'], 'imageFile') | imagine_filter('article_thumb') }}" alt="{{ article.name }}">
+                            </a>
+                        </div>
+                        <div class="uk-card-body">
+                            <a class="uk-button uk-button-text" href="{{ path('showOne', {'id': article.id}) }}">
+                                {{ article.name }}
+                            </a>
+                            {#<p>{{ article.description | truncate(40) }}</p>#}
+                        </div>
+                        <div class="uk-card-footer">
+                            <p>{{ article.price ~ ' EUR'}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

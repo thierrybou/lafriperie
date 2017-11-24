@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <div class="container">
+            <p>{{ article.name }}</p>
+            <p>{{ article.category }}</p>
+            <p>{{ article.brand }}</p>
+            <p>{{ article.model }}</p>
+            <p>{{ article.description }}</p>
+            <p>{{ article.price }}</p>
+            <p><img src="{{ vich_uploader_asset(article.images[0], 'imageFile') | imagine_filter('article_thumb') }}" alt="{{ article.name }}" /></p>
+    </div>
+
+{% endblock %}
