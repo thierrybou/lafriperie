@@ -97,6 +97,8 @@ fos_user:
                 address:     registration@example.com
                 sender_name: Demo Registration
             template:        '@FOSUser/Registration/email.txt.twig'
+        form:
+            type: AppBundle\Form\RegistrationType
     resetting:
         email:
             from_email:
