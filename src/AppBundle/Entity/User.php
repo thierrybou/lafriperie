@@ -5,12 +5,15 @@ namespace AppBundle\Entity;
 use ArticleBundle\Entity\Article;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @Vich\Uploadable
  */
 class User extends BaseUser
 {
@@ -50,6 +53,26 @@ class User extends BaseUser
      * )
      */
     protected $lastname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imageName", type="string", length=255)
+     */
+    private $imageName;
+
+    /**
+     * @Vich\UploadableField(mapping="user_image", fileNameProperty="imageName")
+     * @var File $imageFile
+     */
+    private $imageFile;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
 
     public function __construct()
     {
@@ -120,7 +143,7 @@ class User extends BaseUser
      */
     public function getFirstname()
     {
-        return $this->username;
+        return $this->firstname;
     }
 
     /**
@@ -140,6 +163,81 @@ class User extends BaseUser
      */
     public function getLastname()
     {
-        return $this->username;
+        return $this->lastname;
+    }
+
+    /**
+     * Set imageName
+     *
+     * @param string $imageName
+     *
+     * @return User
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get imageName
+     *
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
+     *
+     * @return User
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updated = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return User
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

@@ -21,6 +21,7 @@ class ArticleController extends Controller
     {
         $session = new Session();
         $article = new Article();
+
         $article->addImage(new Image());
 
         $form = $this->createForm(ArticleType::class, $article);

@@ -72,12 +72,12 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  '%mailer_transport%'
-    username:   '%mailer_user%'
-    password:   '%mailer_password%'
-    host:       smtp.gmail.com
+    transport: '%mailer_transport%'
     encryption: ssl
-#    auth_mode: login
+    port: 465
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
     spool: { type: memory }
 
 # FOSUser Configuration
@@ -99,6 +99,9 @@ fos_user:
             template:        '@FOSUser/Registration/email.txt.twig'
         form:
             type: AppBundle\Form\RegistrationType
+    profile:
+        form:
+            type: AppBundle\Form\ProfileType
     resetting:
         email:
             from_email:
@@ -146,9 +149,17 @@ vich_uploader:
             uri_prefix:         '/uploads/images/articles'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/articles'
 
-            inject_on_load:   false
+            inject_on_load: false
             delete_on_update: true
             delete_on_remove: true
+        user_image:
+            uri_prefix:         '/uploads/images/users/'
+            upload_destination: '%kernel.root_dir%/../web/uploads/images/users'
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
 
 # LiipImagineBundle Configuration
 liip_imagine:
@@ -162,3 +173,9 @@ liip_imagine:
             filters:
                 thumbnail:  { size: [240, 180], mode: outbound }
                 #background: { size: [121, 91], position: center, color: '#000000' }
+        user_thumb:
+            quality: 75
+            filters:
+                thumbnail:
+                    size: [450, 287]
+                    mode: inset

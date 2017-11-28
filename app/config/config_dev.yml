@@ -38,10 +38,11 @@ monolog:
         #    level: info
 
 swiftmailer:
-    transport: gmail
-    username: thierry.bouts@gmail.com
-    password: '@@excel@2'
-    host: smtp.gmail.com
+    transport: '%mailer_transport%'
     encryption: ssl
-    auth_mode: login
-    delivery_addresses: ['thierry.bouts@hotmail.fr']
+    port: 465
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+    #delivery_addresses: '%mailer_delivery_addresses%'
