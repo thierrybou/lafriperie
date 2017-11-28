@@ -33,7 +33,19 @@
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <ul class="uk-navbar-nav">
                     <li>
-                        <a href="#">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</a>
+                        <a href="#">
+                            {% if app.user.imageName is empty %}
+                                <img class="uk-border-circle" width="30" height="30"
+                                     src="{{ asset('uploads/images/users/default/default.jpeg') }}"
+                                     alt="{{ 'default_image' }}">
+                            {% else %}
+                                <img class="uk-border-circle" width="30" height="30"
+                                     src="{{ asset('uploads/images/users/' ~ app.user.imageName) }}"
+                                     alt="{{ app.user.imageName }}">
+                            {% endif %}
+                            <span uk-icon="icon: triangle-down; ratio: 1"></span>
+                        </a>
+                        {#<a href="#">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</a>#}
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
                                 <li><a href="{{ path('fos_user_profile_show') }}">Mon profil</a></li>
@@ -47,7 +59,7 @@
             {% else %}
                 <a class="uk-navbar-item"
                    href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-                 /
+                /
                 <a class="uk-navbar-item"
                    href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
             {% endif %}
