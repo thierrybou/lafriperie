@@ -1,3 +1,6 @@
+payum_all:
+    resource: "@PayumBundle/Resources/config/routing/all.xml"
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

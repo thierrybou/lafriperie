@@ -179,3 +179,22 @@ liip_imagine:
                 thumbnail:
                     size: [450, 287]
                     mode: inset
+
+# Payum Configuration
+payum:
+    security:
+        token_storage:
+            PaymentBundle\Entity\PaymentToken: { doctrine: orm }
+
+    storages:
+        PaymentBundle\Entity\Payment: { doctrine: orm }
+
+    gateways:
+        lafriperie_with_paypal:
+            factory: paypal_pro_checkout
+            username: '%paypal_username%'
+            password: '%paypal_email%'
+            partner:  'EDIT ME'
+            vendor:   'EDIT ME'
+            tender:  C
+            sandbox: true

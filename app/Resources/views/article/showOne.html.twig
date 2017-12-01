@@ -11,11 +11,74 @@
                 <p><span class="uk-text-bold">Modèle : </span>{{ article.model }}</p>
                 <p><span class="uk-text-bold">Description : </span>{{ article.description }}</p>
                 <p><span class="uk-text-bold">Prix : </span>{{ article.price ~ ' EUR'}}</p>
+
+                <div id="paypal-button"></div>
             </div>
             <div class="uk-width-1-3@m uk-flex-first">
                 <img src="{{ vich_uploader_asset(article.images[0], 'imageFile') | imagine_filter('article_thumb') }}" alt="{{ article.name }}" />
             </div>
         </div>
     </div>
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+    <script>
+        paypal.Button.render({
+
+            env: 'sandbox', // Or 'production',
+
+            client: {
+                sandbox:    'ARoye3uKOwyrL1m5aY0PjJn86wpOoN-OaGwSgTNImdrIbuo7b9qOFHmpDfjrOLyaOz8a-BMEmhQnw0Xw',
+                production: 'ASKP0vznvB-CqojHic7wrUaz2cdeIyVXHqMYYMr15BSXXo1bfjHP7b5BnxUeWVus2oYXOSiPFfSyeua3'
+            },
+
+            commit: true, // Show a 'Pay Now' button
+
+            style: {
+                color: 'gold',
+                size: 'small',
+                maxbuttons: 4,
+                layout: 'horizontal',
+                label: 'pay',
+                funding: {
+                    allowed: [ paypal.FUNDING.CARD ]
+                },
+                fundingicons: true
+            },
+
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: {{ article.price }}, currency: 'EUR' }
+                            }
+                        ]
+                    }
+                });
+            },
+
+            onAuthorize: function(data, actions) {
+                return actions.payment.execute().then(function(payment) {
+
+                    // The payment is complete!
+                    // You can now show a confirmation message to the customer
+                });
+            },
+
+            onCancel: function(data, actions) {
+                /*
+                 * Buyer cancelled the payment
+                 */
+            },
+
+            onError: function(err) {
+                /*
+                 * An error occurred during the transaction
+                 */
+            }
+
+        }, '#paypal-button');
+    </script>
 
 {% endblock %}
